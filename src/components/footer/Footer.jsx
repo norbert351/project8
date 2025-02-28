@@ -1,5 +1,13 @@
-export default function Footer() {
+import styles from "./footer.module.css"
+
+const  Footer = () =>{
     return (
-        <div> footer</div>
+        <div className={styles.container}>
+            <div className={styles.logo}>lamadev</div>
+            <div className={styles.text}>
+                Lama creative thought agency @ All right reserved
+            </div>
+        </div>
     )
 }
+export default Footer

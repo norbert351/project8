@@ -4,8 +4,12 @@ import Link from "next/link";
 import styles from "./links.module.css"
 import NavLink from "./navLink/navLink";
 import { useState } from "react";
+import Image from "next/image";
+import { signOut } from "../../../../auth";
 
-   const links = [
+
+
+const links = [
     {
         title: "Homepage",
         path: "/",
@@ -23,10 +27,23 @@ import { useState } from "react";
         path: "/blog",
     },
 
-   ];
+    {
+        title: "Register",
+        path: "/register"
+    },
+    {
+        title: "Product",
+        path: "/product"
+    },
+    {
+        title: "Login",
+        path: "/login"
+    },
 
-   const Links = () => {
 
+];
+
+const Links = () => {
     const [open,setOpen] = useState(false)
     //    TEMPORARY
      const session = true
@@ -45,16 +62,28 @@ import { useState } from "react";
                     <NavLink item={{title: "Admin", path: "/admin"}} />
                 )
             }
-            <button className={styles.logout}>Logout</button>
+            <form action={async () => {
+            //  "use server"
+             await signOut();
+           }}
+            >
+            <button className={styles.logout}>
+                Logout
+
+            </button>
+            </form>
             </>
         ) : (
             <NavLink item={{title: "Login", path: "/login"}} />
         )
     }
       </div>
-      <button className={styles.menuButton} onClick={() =>setOpen((prev) => !prev)}>Menu</button>
-      {
-        open && ( 
+      <Image className={styles.menuButton}
+      src="/menu.png" alt="" 
+      width={30} 
+      height={30}
+      onClick={() =>setOpen((prev) => !prev)} />
+      {open && ( 
         <div className={styles.mobileLinks}>
             {links.map(link => (
                 <NavLink item={link} key={link.title}/>
