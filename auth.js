@@ -4,7 +4,7 @@ import Credentials from "next-auth/providers/credentials"
 import { saltAndHashPassword } from "@/utils/password"
 import { db } from "@/db"
 import { registerTable } from "@/db/schema"
- 
+import bcrypt from "bcryptjs"
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
@@ -18,17 +18,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         let user = null
  
         // logic to salt and hash password
-        const pwHash = saltAndHashPassword(credentials.password)
+        const pwHash = await saltAndHashPassword(credentials.password)
  
         // logic to verify if the user exists
-        user = await db.select().from(registerTable).where(credentials.email, pwHash)
- 
+       user = await db.select().from(registerTable).where(credentials.email, registerTable.email)
+      console.log('great',user, credentials);
+      
         if (!user) {
           // No user found, so this is their first attempt to login
           // Optionally, this is also the place you could do a user registration
           throw new Error("Invalid credentials.")
         }
- 
+        
         // return user object with their profile data
         return user
       },

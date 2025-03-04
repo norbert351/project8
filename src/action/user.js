@@ -1,10 +1,8 @@
 "use server";
-import { redirect } from "next/dist/server/api-utils";
-import { db } from "../db/index";
-import { contactTable, registerTable,} from "@/db/schema.js"
-import { hash } from "bcryptjs";
-import { eq } from "drizzle-orm";
+import { contactTable, registerTable, } from "@/db/schema.js";
 import { saltAndHashPassword } from "@/utils/password";
+import { eq } from "drizzle-orm";
+import { db } from "../db/index";
 
 export async function register(formdata){
     
@@ -13,8 +11,8 @@ export async function register(formdata){
         firstname: data.firstname,
         lastname: data.lastname,
         email: data.email,
-        password:saltAndHashPassword (data.password),
-        confirmPassword: data.confirmPassword,
+        password: await saltAndHashPassword (data.password),
+        confirmPassword: await saltAndHashPassword (data.confirmPassword),
     };
     // console.log(user);
     // // existing user
